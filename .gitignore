@@ -1,0 +1,28 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+target
+*.class
+
+*.log
+.settings
+.project
+logs
+job
+
+# 证书文件
+*.jks
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+common.md
+
+.workbuddy
