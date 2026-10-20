@@ -28,4 +28,6 @@ public interface ILearningLessonService extends IService<LearningLesson> {
     void deleteLearningCourse(Long userId, List<Long> courseIds);
 
     void deleteMyCourse(Long courseId);
+
+    void checkCourseExpire();
 }

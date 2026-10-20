@@ -7,6 +7,7 @@ import com.tianji.learning.domain.dto.LearningPlanDTO;
 import com.tianji.learning.domain.vo.LearningLessonVO;
 import com.tianji.learning.domain.vo.LearningPlanPageVO;
 import com.tianji.learning.service.ILearningLessonService;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +48,11 @@ public class LearningLessonController {
         return lessonService.queryMyCurrentLesson();
     }
 
+    //删除过期课程
     @ApiOperation("删除课程")
     @DeleteMapping("/{courseId}")
     public void deleteLearningCourse(@PathVariable("courseId") Long courseId){
-        return lessonService.deleteMyCourse(courseId);
+        lessonService.deleteMyCourse(courseId);
     }
 
 }

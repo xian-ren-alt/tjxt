@@ -34,4 +34,8 @@ public class LearningRecordFormDTO {
 
     @ApiModelProperty("提交时间")
     private LocalDateTime commitTime;
+
+    @ApiModelProperty("用户id")
+    private Long userId;
+
 }

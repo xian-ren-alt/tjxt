@@ -17,10 +17,14 @@ public interface MqConstants {
         /*异常信息的交换机*/
         String ERROR_EXCHANGE = "error.topic";
 
+
         /*支付有关的交换机*/
         String PAY_EXCHANGE = "pay.topic";
         /*交易服务延迟任务交换机*/
         String TRADE_DELAY_EXCHANGE = "trade.delay.topic";
+
+        /*学习记录延迟队列交换机*/
+        String LEARNING_DELAY_EXCHANGE="learning.delay.topic";
 
          /*点赞记录有关的交换机*/
         String LIKE_RECORD_EXCHANGE = "like.record.topic";
@@ -35,6 +39,7 @@ public interface MqConstants {
         String COURSE_DOWN_KEY = "course.down";
         String COURSE_EXPIRE_KEY = "course.expire";
         String COURSE_DELETE_KEY = "course.delete";
+        String LEARNING_RECORD_DELAY_KEY="learn.delay";
 
         /*订单有关的RoutingKey*/
         String ORDER_PAY_KEY = "order.pay";

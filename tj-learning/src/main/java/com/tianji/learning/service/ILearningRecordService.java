@@ -18,4 +18,8 @@ public interface ILearningRecordService extends IService<LearningRecord> {
     LearningLessonDTO queryLearningRecordByCourse(Long courseId);
 
     void commitLearningRecord(LearningRecordFormDTO dto);
+
+    void handlecomitLearningLesson(LearningRecordFormDTO dto);
+
+    public void saveLearningRecord(LearningRecordFormDTO dto);
 }

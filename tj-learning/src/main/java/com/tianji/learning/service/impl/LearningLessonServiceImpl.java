@@ -120,7 +120,7 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
         LearningLesson l = new LearningLesson();
         l.setId(lesson.getId());
         l.setWeekFreq(plan.getFreq());
-        if(lesson.getPlanStatus() == PlanStatus.PLAN_RUNNING.getValue()) {
+        if (lesson.getPlanStatus() == PlanStatus.PLAN_RUNNING.getValue()) {
             l.setPlanStatus(PlanStatus.PLAN_RUNNING.getValue());
         }
         updateById(l);
@@ -161,7 +161,7 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
         }
         Map<Long, CourseSimpleInfoDTO> cMap = queryCourseSimpleInfoList(records);
 
-        List<IdAndNumDTO> list =recordMapper.countLearnedSections(userId,begin,end);
+        List<IdAndNumDTO> list = recordMapper.countLearnedSections(userId, begin, end);
         Map<Long, Integer> map = IdAndNumDTO.toMap(list);
         //组装数据vo
         List<LearningPlanVO> volist = new ArrayList<>(records.size());
@@ -172,7 +172,7 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
             vo.setLatestLearnTime(lesson.getLatestLearnTime());
             vo.setWeekFreq(lesson.getWeekFreq());
             CourseSimpleInfoDTO cInfo = cMap.get(lesson.getCourseId());
-            if (cInfo!=null) {
+            if (cInfo != null) {
                 vo.setCourseName(cInfo.getName());
                 vo.setSections(cInfo.getSectionNum());
             }
@@ -221,11 +221,45 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
     public void deleteMyCourse(Long courseId) {
         Long user = UserContext.getUser();
         List<Long> lst = CollUtils.singletonList(courseId);
-        deleteLearningCourse(user,lst);
+        deleteLearningCourse(user, lst);
+    }
+
+    //定时检查课程是否过期
+    @Override
+    public void checkCourseExpire() {
+        int batchSize = 1000;
+        while (true) {
+            List<Long> ids = lambdaQuery()
+                    .lt(LearningLesson::getExpireTime, LocalDateTime.now())
+                    .ne(LearningLesson::getStatus, 3)
+                    .last("LIMIT" + batchSize)
+                    .list()
+                    .stream()
+                    .map(LearningLesson::getId)
+                    .collect(Collectors.toList());
+
+            if (ids.isEmpty()) {
+                break;  // 没有要处理的了，结束
+            }
+
+            // 2. 按ID批量更新这一批
+            lambdaUpdate()
+                    .in(LearningLesson::getId, ids)
+                    .set(LearningLesson::getStatus, 3)
+                    .update();
+
+            // 3. 睡100毫秒，让其他业务的请求先跑
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+
     }
 
     @Override
-    public void deleteLearningCourse(Long userId,List<Long> courseIds) {
+    public void deleteLearningCourse(Long userId, List<Long> courseIds) {
         if (CollUtils.isEmpty(courseIds)) {
             return;
         }

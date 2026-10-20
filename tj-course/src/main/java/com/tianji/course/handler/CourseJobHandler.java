@@ -23,4 +23,5 @@ public class CourseJobHandler {
     public void courseFinished(){
         courseService.courseFinished();
     }
+
 }

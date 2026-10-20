@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class LearningRecordController {
     private final ILearningRecordService recordService;
 
+    //查询学习计划
     @GetMapping("/course/{courseId}")
     public LearningLessonDTO queryLearningRecordByCourse(
             @ApiParam(value = "课程id", example = "2") @PathVariable("courseId") Long courseId){
