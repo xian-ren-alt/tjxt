@@ -1,4 +1,4 @@
-﻿package com.tianji.learning.controller;
+package com.tianji.learning.controller;
 
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.learning.domain.dto.ReplyDTO;
